@@ -16,59 +16,54 @@ public class SystemManager : MonoBehaviour
     Rule[] ruleset = new Rule[2];
     private string letter;
     private string prev_letter;
+    private int number;
     // have 4 lsystems (2D0L, and 2 extensions)
     // Start is called before the first frame update
     void Start()
     {
 
-        // int currentIterations = uiHandler.iterations;
-        // int currentAngle = (int)uiHandler.angle;
-        // int rule = uiHandler.selectedRule;
-        // Rule[] ruleset = new Rule[2];
-        // initalize your 4 Lsystems here
-        // ruleset[0] = new Rule('F', "F=F+F--F+F");
         int rule = uiHandler.selectedRule;
+        number = Random.Range(1, 10);
 
         switch (rule)
         {
             case 0:
                 // ---- rules i like ---- //
                 ruleset[0] = new Rule('F', "FF[+FF+FF+FF+FF+FF]−FF-FF−FF-FF+FF-FF");
-                ruleset[1] = new Rule('F', "F");
+                if (number >= 5){
+                    ruleset[1] = new Rule('F', "F");
+                }
+                else{
+                    ruleset[1] = new Rule('F', "F-FF+F");
+                }
                 letter = "F";
                 break;  
             case 1:
-                ruleset[0] = new Rule('T', "FF[+FF[-FF[+FF[-FF[+FF]]]][-FF[+FF[-FF[+FF[-FF[+FF]]]]]]");
-                ruleset[1] = new Rule('F', "F");
+                ruleset[0] = new Rule('T', "FF[+FF[-FF[+FF[-FF[+FF]]]][-FF[+FF[-FF[+FF[-FF[+FF]]]]]][+FF[+FF[+FF[+FF[+FF]]]][-FF[-FF[-FF[-FF[-FF]]]]");
+                if (number >= 5){
+                    ruleset[1] = new Rule('F', "F+FF-F");
+                }
+                else{
+                    ruleset[1] = new Rule('F', "F-FF+F");
+                }
                 letter = "T";
                 break;
                 // ---- rules i like ---- //
             case 2:
                 ruleset[0] = new Rule('X', "F+[[X]-X]-F[-FX]+X");
-                ruleset[1] = new Rule('F', "FF");
+                if (number >= 5){
+                    ruleset[1] = new Rule('F', "FF");
+                }
+                else{
+                    ruleset[1] = new Rule('F', "FF-FF+FF");
+                }
                 letter = "X";
                 break;
             default:
                 break;
         }
 
-        // ruleset[2] = new Rule('A', "F+[[X]-X]-F[-FX]+X), (F → FF)");
-        // ruleset[0] = new Rule('X', "F+[[X]-X]-F[-FX]+X");
-        // ruleset[1] = new Rule('F', "FF");
         lsys = new LSystem(letter, ruleset);
-        // int totalIterations = uiHandler.iterations;
-        // int currentAngle = (int)uiHandler.angle;
-        // int rule = uiHandler.selectedRule;
-        // Debug.Log("HI");
-
-        // // if (curr_generation != totalIterations){
-        // for (int i = 0; i < 2; i++){
-        //     lsys.Generate();
-        //     curr_sentence = lsys.GetSentence();
-        //     turtle.Draw(curr_sentence);
-        //     Debug.Log(lsys.GetSentence());
-        // }
-
     }
 
     // Update is called once per frame
@@ -78,30 +73,50 @@ public class SystemManager : MonoBehaviour
         int currentAngle = (int)uiHandler.angle;
         int rule = uiHandler.selectedRule;
         prev_letter = letter;
-        // Debug.Log("HI");
+        int number = Random.Range(1, 10);
+
+        number = Random.Range(1, 10);
+
+        // the following switch statement makes it possible to switch cases while running the game
         switch (rule)
         {
             case 0:
                 // ---- rules i like ---- //
                 ruleset[0] = new Rule('F', "FF[+FF+FF+FF+FF+FF]−FF-FF−FF-FF+FF-FF");
-                ruleset[1] = new Rule('F', "F");
+                if (number >= 5){
+                    ruleset[1] = new Rule('F', "F");
+                }
+                else{
+                    ruleset[1] = new Rule('F', "F-FF+F");
+                }
                 letter = "F";
                 break;  
             case 1:
-                ruleset[0] = new Rule('T', "FF[+FF[-FF[+FF[-FF[+FF]]]][−FF[+FF[−FF[+FF[-FF[+FF]]]]]]");
-                ruleset[1] = new Rule('F', "F");
+                ruleset[0] = new Rule('T', "FF[+FF[-FF[+FF[-FF[+FF]]]][-FF[+FF[-FF[+FF[-FF[+FF]]]]]][+FF[+FF[+FF[+FF[+FF]]]][-FF[-FF[-FF[-FF[-FF]]]]");
+                if (number >= 5){
+                    ruleset[1] = new Rule('F', "F+FF-F");
+                }
+                else{
+                    ruleset[1] = new Rule('F', "F-FF+FF");
+                }
                 letter = "T";
                 break;
                 // ---- rules i like ---- //
             case 2:
                 ruleset[0] = new Rule('X', "F+[[X]-X]-F[-FX]+X");
-                ruleset[1] = new Rule('F', "FF");
+                if (number >= 5){
+                    ruleset[1] = new Rule('F', "FF");
+                }
+                else{
+                    ruleset[1] = new Rule('F', "FF-FF+FF");
+                }
                 letter = "X";
                 break;
             default:
                 break;
         }
 
+        // if our current tree isn't the same ruleset, restart
         if (prev_letter != letter){
             lsys = new LSystem(letter, ruleset);
             prev_letter = letter;
@@ -109,8 +124,7 @@ public class SystemManager : MonoBehaviour
 
         }
 
-        // if (curr_generation != totalIterations){
-        // for (int i = 0; i < 2; i++){
+        // keep building the generations until we reach the number the user inputted
         if (curr_generation != totalIterations){
             lsys.Generate();
             curr_sentence = lsys.GetSentence();
@@ -118,39 +132,13 @@ public class SystemManager : MonoBehaviour
             Debug.Log(lsys.GetSentence());
             curr_generation++;
         }
+
+        // if we made too many geneartions, restart so we can build again
         if (curr_generation > totalIterations){
             lsys = new LSystem(letter, ruleset);
             curr_generation=0;
-            // lsys.Generate();
-            // curr_sentence = lsys.GetSentence();
-            // turtle.Draw(curr_sentence);
-            // Debug.Log(lsys.GetSentence());
-            // curr_generation++;
         }
-        // }
         
-        // int totalIterations = uiHandler.iterations;
-        // int currentAngle = (int)uiHandler.angle;
-        // int rule = uiHandler.selectedRule;
-        // // if (curr_generation != totalIterations){
-        // for (int i = 0; i < 1; i++){
-        //     lsys.Generate();
-        //     curr_sentence = lsys.GetSentence();
-        //     turtle.Draw(curr_sentence);
-        //     Debug.Log(lsys.GetSentence());
-        // }
-        // if (curr_generation != totalIterations){
-        //     lsys.Generate();
-        //     curr_sentence = lsys.GetSentence();
-        //     turtle.Draw(curr_sentence);
-        //     Debug.Log(lsys.GetSentence());
-        // }
-        // generate Lsystem
-        // use turtle to draw 
     }
-    // public void Generate()
-    // {
-        // generate Lsystem
-        // use turtle to draw   
-    // }
+    
 }

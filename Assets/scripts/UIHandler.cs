@@ -23,6 +23,7 @@ public class UIHandler : MonoBehaviour
         ruleDropdown.onValueChanged.AddListener(OnDropdownChanged);
     }
 
+    // updating the values
     void OnSliderIterationChanged(float value)
     {
         iterations = (int)value;

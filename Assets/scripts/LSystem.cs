@@ -32,7 +32,6 @@ public class LSystem
             // We will replace it with itself unless it matches one of our rules
             string replace = curr.ToString();
 
-            // String replace = "" + curr;
             // Check every rule
             for (int j = 0; j < ruleset.Length; j++) {
                 char a = ruleset[j].GetA();
